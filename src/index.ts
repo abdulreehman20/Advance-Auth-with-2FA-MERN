@@ -1,17 +1,14 @@
 import "dotenv/config";
-import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 import express, { type Request, type Response } from "express";
 import { initializeProcessHandlers } from "./common/utils/process-handlers";
-
 import { Env } from "./configs/env.config";
 import { HTTPSTATUS } from "./configs/http.config";
 import { connectDatabase } from "./database/database";
 import { asyncHandler } from "./middlewares/asyncHandler.middleware";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/notFound.middleware";
-
 
 // Initialize process-level error handlers (must be done early)
 initializeProcessHandlers();
