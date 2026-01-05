@@ -1,15 +1,17 @@
 import "dotenv/config";
-import cookieParser from "cookie-parser";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
 import express, { type Request, type Response } from "express";
-import { logger } from "./common/utils/logger";
 import { initializeProcessHandlers } from "./common/utils/process-handlers";
+
 import { Env } from "./configs/env.config";
 import { HTTPSTATUS } from "./configs/http.config";
 import { connectDatabase } from "./database/database";
 import { asyncHandler } from "./middlewares/asyncHandler.middleware";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/notFound.middleware";
+
 
 // Initialize process-level error handlers (must be done early)
 initializeProcessHandlers();
@@ -53,11 +55,6 @@ app.use(errorHandler);
 
 // Start server
 app.listen(Env.PORT, async () => {
-	try {
-		await connectDatabase();
-		logger.info(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
-	} catch (error) {
-		logger.error("Failed to start server", { error });
-		process.exit(1);
-	}
+	await connectDatabase();
+	console.log(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
 });

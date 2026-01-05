@@ -2,7 +2,6 @@ import type { ErrorRequestHandler, Request, Response } from "express";
 import mongoose from "mongoose";
 import { ErrorCodeEnum } from "../common/enums/error-code.enum";
 import { AppError } from "../common/utils/app-error";
-import { logError } from "../common/utils/logger";
 import { Env } from "../configs/env.config";
 import { HTTPSTATUS, type HttpStatusCodeType } from "../configs/http.config";
 
@@ -139,17 +138,6 @@ export const errorHandler: ErrorRequestHandler = (
 		error = err;
 		message = err.message || message;
 	}
-
-	// Log error with full context (for internal debugging)
-	logError(error, {
-		method: req.method,
-		url: req.url,
-		ip: req.ip,
-		headers: req.headers,
-		body: req.body,
-		params: req.params,
-		query: req.query,
-	});
 
 	// Prepare error response
 	const errorResponse: ErrorResponse = {
