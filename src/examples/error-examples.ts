@@ -1,20 +1,35 @@
 /**
  * Error Handling Examples
- * 
+ *
  * This file demonstrates how to use the error handling system in your controllers and services.
  * These are examples only and should not be imported directly.
  */
 
 import { ErrorCodeEnum } from "../common/enums/error-code.enum";
-import { NotFoundException, UnauthorizedException, ForbiddenException, ValidationException, ConflictException, DatabaseException, TooManyRequestsException, InternalServerException } from "../common/utils/app-error";
+import {
+	ConflictException,
+	DatabaseException,
+	ForbiddenException,
+	InternalServerException,
+	NotFoundException,
+	TooManyRequestsException,
+	UnauthorizedException,
+	ValidationException,
+} from "../common/utils/app-error";
 
 // ==================== Example 1: Validation Error ====================
 export const exampleValidationError = () => {
 	// Simple validation error
 	throw new ValidationException("Email is required");
+};
 
+// ==================== Example 1b: Validation Error with Details ====================
+export const exampleValidationErrorWithDetails = () => {
 	// Validation error with details
-	throw new ValidationException("Validation failed", ErrorCodeEnum.VAL_400, { fields: ["email", "password"], errors: ["Email is required", "Password must be at least 8 characters"] });
+	throw new ValidationException("Validation failed", ErrorCodeEnum.VAL_400, {
+		fields: ["email", "password"],
+		errors: ["Email is required", "Password must be at least 8 characters"],
+	});
 };
 
 // ==================== Example 2: Not Found Error ====================
@@ -29,12 +44,17 @@ export const exampleUnauthorizedError = () => {
 
 // ==================== Example 4: Forbidden Error ====================
 export const exampleForbiddenError = () => {
-	throw new ForbiddenException("You do not have permission to access this resource");
+	throw new ForbiddenException(
+		"You do not have permission to access this resource",
+	);
 };
 
 // ==================== Example 5: Conflict Error ====================
 export const exampleConflictError = () => {
-	throw new ConflictException("An account with this email already exists", ErrorCodeEnum.AUTH_EMAIL_ALREADY_EXISTS);
+	throw new ConflictException(
+		"An account with this email already exists",
+		ErrorCodeEnum.AUTH_EMAIL_ALREADY_EXISTS,
+	);
 };
 
 // ==================== Example 6: Database Error ====================
@@ -44,7 +64,9 @@ export const exampleDatabaseError = () => {
 
 // ==================== Example 7: Rate Limit Error ====================
 export const exampleRateLimitError = () => {
-	throw new TooManyRequestsException("Too many login attempts. Please try again in 15 minutes");
+	throw new TooManyRequestsException(
+		"Too many login attempts. Please try again in 15 minutes",
+	);
 };
 
 // ==================== Example 8: Internal Server Error ====================
@@ -83,19 +105,31 @@ const findUserById = async (_id: string) => {
 // ==================== Example 10: Conditional Error Throwing ====================
 export const exampleConditionalError = (email: string, password: string) => {
 	if (!email) {
-		throw new ValidationException("Email is required", ErrorCodeEnum.VAL_REQUIRED_FIELD);
+		throw new ValidationException(
+			"Email is required",
+			ErrorCodeEnum.VAL_REQUIRED_FIELD,
+		);
 	}
 
 	if (!password) {
-		throw new ValidationException("Password is required", ErrorCodeEnum.VAL_REQUIRED_FIELD);
+		throw new ValidationException(
+			"Password is required",
+			ErrorCodeEnum.VAL_REQUIRED_FIELD,
+		);
 	}
 
 	if (password.length < 8) {
-		throw new ValidationException("Password must be at least 8 characters", ErrorCodeEnum.VAL_OUT_OF_RANGE);
+		throw new ValidationException(
+			"Password must be at least 8 characters",
+			ErrorCodeEnum.VAL_OUT_OF_RANGE,
+		);
 	}
 
 	if (!isValidEmail(email)) {
-		throw new ValidationException("Invalid email format", ErrorCodeEnum.VAL_INVALID_FORMAT);
+		throw new ValidationException(
+			"Invalid email format",
+			ErrorCodeEnum.VAL_INVALID_FORMAT,
+		);
 	}
 };
 
@@ -103,4 +137,3 @@ export const exampleConditionalError = (email: string, password: string) => {
 const isValidEmail = (_email: string) => {
 	return false;
 };
-

@@ -1,12 +1,16 @@
-import { HTTPSTATUS } from "../configs/http.config";
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { ErrorCodeEnum } from "../common/enums/error-code.enum";
+import { HTTPSTATUS } from "../configs/http.config";
 
 /**
  * 404 Not Found Handler Middleware
  * Handles requests to non-existent routes
  */
-export const notFoundHandler = (req: Request, res: Response, _next: NextFunction): void => {
+export const notFoundHandler = (
+	req: Request,
+	res: Response,
+	_next: NextFunction,
+): void => {
 	res.status(HTTPSTATUS.NOT_FOUND).json({
 		errorName: "NotFoundError",
 		errorCode: ErrorCodeEnum.USR_404,
@@ -16,4 +20,3 @@ export const notFoundHandler = (req: Request, res: Response, _next: NextFunction
 		path: req.originalUrl,
 	});
 };
-

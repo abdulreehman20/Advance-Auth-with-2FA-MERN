@@ -1,15 +1,15 @@
 import "dotenv/config";
-import cors from "cors";
 import cookieParser from "cookie-parser";
-import { Env } from "./configs/env.config";
+import cors from "cors";
+import express, { type Request, type Response } from "express";
 import { logger } from "./common/utils/logger";
+import { initializeProcessHandlers } from "./common/utils/process-handlers";
+import { Env } from "./configs/env.config";
 import { HTTPSTATUS } from "./configs/http.config";
 import { connectDatabase } from "./database/database";
-import express, { type Request, type Response } from "express";
-import { notFoundHandler } from "./middlewares/notFound.middleware";
-import { errorHandler } from "./middlewares/errorHandler.middleware";
 import { asyncHandler } from "./middlewares/asyncHandler.middleware";
-import { initializeProcessHandlers } from "./common/utils/process-handlers";
+import { errorHandler } from "./middlewares/errorHandler.middleware";
+import { notFoundHandler } from "./middlewares/notFound.middleware";
 
 // Initialize process-level error handlers (must be done early)
 initializeProcessHandlers();
@@ -24,20 +24,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: Env.FRONTEND_ORIGIN, credentials: true }));
 
 // Routes
-app.get("/", asyncHandler(async (_req: Request, res: Response) => {
-	res.status(HTTPSTATUS.OK).json({
-		message: "Welcome to the Express.js Authentication API",
-		status: "OK",
-	});
-}));
+app.get(
+	"/",
+	asyncHandler(async (_req: Request, res: Response) => {
+		res.status(HTTPSTATUS.OK).json({
+			message: "Welcome to the Express.js Authentication API",
+			status: "OK",
+		});
+	}),
+);
 
-app.get("/health", asyncHandler(async (_req: Request, res: Response) => {
-	res.status(HTTPSTATUS.OK).json({
-		message: "Server is healthy",
-		status: "OK",
-		timestamp: new Date().toISOString(),
-	});
-}));
+app.get(
+	"/health",
+	asyncHandler(async (_req: Request, res: Response) => {
+		res.status(HTTPSTATUS.OK).json({
+			message: "Server is healthy",
+			status: "OK",
+			timestamp: new Date().toISOString(),
+		});
+	}),
+);
 
 // 404 Handler - must be after all routes but before error handler
 app.use(notFoundHandler);

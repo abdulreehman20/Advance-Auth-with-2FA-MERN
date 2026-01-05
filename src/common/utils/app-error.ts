@@ -1,5 +1,8 @@
 import { HTTPSTATUS, type HttpStatusCodeType } from "../../configs/http.config";
-import { ErrorCodeEnum, type ErrorCodeEnumType } from "../enums/error-code.enum";
+import {
+	ErrorCodeEnum,
+	type ErrorCodeEnumType,
+} from "../enums/error-code.enum";
 
 export const ErrorCodes = {
 	ERR_INTERNAL: "ERR_INTERNAL",

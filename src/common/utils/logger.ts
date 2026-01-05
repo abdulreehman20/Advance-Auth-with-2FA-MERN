@@ -8,15 +8,15 @@ const { combine, timestamp, errors, json, printf, colorize } = winston.format;
 const consoleFormat = printf((info: winston.Logform.TransformableInfo) => {
 	const { level, message, timestamp, stack, ...meta } = info;
 	let log = `${timestamp} [${level}]: ${message}`;
-	
+
 	if (stack) {
 		log += `\n${stack}`;
 	}
-	
+
 	if (Object.keys(meta).length > 0) {
 		log += `\n${JSON.stringify(meta, null, 2)}`;
 	}
-	
+
 	return log;
 });
 
@@ -125,4 +125,3 @@ export const logInfo = (message: string, meta?: Record<string, unknown>) => {
 export const logDebug = (message: string, meta?: Record<string, unknown>) => {
 	logger.debug(message, meta);
 };
-

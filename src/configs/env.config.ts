@@ -15,6 +15,3 @@ export const Env = {
 	//   MAILER_SENDER: getEnv("MAILER_SENDER"),
 	//   RESEND_API_KEY: getEnv("RESEND_API_KEY"),
 } as const;
-
-
-

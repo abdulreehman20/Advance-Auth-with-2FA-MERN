@@ -1,25 +1,38 @@
-import { logger, logError } from "./logger";
 import { Env } from "../../configs/env.config";
+import { logError, logger } from "./logger";
 
 /**
  * Handle unhandled promise rejections
  * This catches errors from async operations that weren't properly handled
  */
 export const handleUnhandledRejection = (): void => {
-	process.on("unhandledRejection", (reason: unknown, promise: Promise<unknown>) => {
-		const error = reason instanceof Error ? reason : new Error(String(reason) || "Unhandled Promise Rejection");
+	process.on(
+		"unhandledRejection",
+		(reason: unknown, promise: Promise<unknown>) => {
+			const error =
+				reason instanceof Error
+					? reason
+					: new Error(String(reason) || "Unhandled Promise Rejection");
 
-		logError(error, { method: "PROCESS", url: "unhandledRejection" });
+			logError(error, { method: "PROCESS", url: "unhandledRejection" });
 
-		logger.error("Unhandled Promise Rejection", { reason, promise, stack: error.stack });
+			logger.error("Unhandled Promise Rejection", {
+				reason,
+				promise,
+				stack: error.stack,
+			});
 
-		// In production, we might want to exit the process
-		// In development, we can continue for debugging
-		if (Env.NODE_ENV === "production") {
-			// Give time for logs to be written
-			setTimeout(() => { logger.error("Exiting process due to unhandled rejection"); process.exit(1) }, 1000);
-		}
-	});
+			// In production, we might want to exit the process
+			// In development, we can continue for debugging
+			if (Env.NODE_ENV === "production") {
+				// Give time for logs to be written
+				setTimeout(() => {
+					logger.error("Exiting process due to unhandled rejection");
+					process.exit(1);
+				}, 1000);
+			}
+		},
+	);
 };
 
 /**
@@ -30,7 +43,10 @@ export const handleUncaughtException = (): void => {
 	process.on("uncaughtException", (error: Error) => {
 		logError(error, { method: "PROCESS", url: "uncaughtException" });
 
-		logger.error("Uncaught Exception", { error: error.message, stack: error.stack });
+		logger.error("Uncaught Exception", {
+			error: error.message,
+			stack: error.stack,
+		});
 
 		// Uncaught exceptions are critical - exit the process
 		logger.error("Exiting process due to uncaught exception");
@@ -71,4 +87,3 @@ export const initializeProcessHandlers = (): void => {
 
 	logger.info("Process-level error handlers initialized");
 };
-

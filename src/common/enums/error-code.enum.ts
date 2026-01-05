@@ -1,6 +1,6 @@
 /**
  * Comprehensive Error Code Enum
- * 
+ *
  * Naming Convention:
  * - USR_*: User/Client errors (4xx)
  * - AUTH_*: Authentication/Authorization errors
